@@ -43,7 +43,7 @@ namespace ShafirScreenshoter
             fileName = fileName.Replace(':', '_');
 
             Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-            Graphics graphics = Graphics.FromImage(printscreen as Image);
+            Graphics graphics = Graphics.FromImage(printscreen);
             graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
             printscreen.Save(path + $"{fileName}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
         }

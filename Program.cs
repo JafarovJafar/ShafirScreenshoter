@@ -1,6 +1,7 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System;
 using System.IO;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace ShafirScreenshoter
 {
@@ -13,16 +14,18 @@ namespace ShafirScreenshoter
             TakeScreenshot();
         }
 
+
+        private static string cfgFileName = "ShafirScreenshoter.cfg";
         private static string path = "//192.168.44.32/Users2/Obmen/646/screens/";
 
         private static void CheckCfg()
         {
-            if (!File.Exists("ShafirScreenshoter.cfg"))
+            if (!File.Exists(cfgFileName))
             {
-                FileStream fileStream = File.Create("ShafirScreenShoter.cfg");
+                FileStream fileStream = File.Create(cfgFileName);
                 fileStream.Close();
 
-                StreamWriter streamWriter = new StreamWriter("ShafirScreenshoter.cfg");
+                StreamWriter streamWriter = new StreamWriter(cfgFileName);
                 streamWriter.WriteLine(path);
                 streamWriter.Close();
             }
@@ -30,16 +33,19 @@ namespace ShafirScreenshoter
 
         private static void GetVars()
         {
-            StreamReader streamReader = new StreamReader("ShafirScreenshoter.cfg");
+            StreamReader streamReader = new StreamReader(cfgFileName);
             path = streamReader.ReadLine();
         }
 
         private static void TakeScreenshot()
         {
+            string fileName = DateTime.Now.ToString();
+            fileName = fileName.Replace(':', '_');
+
             Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             Graphics graphics = Graphics.FromImage(printscreen as Image);
             graphics.CopyFromScreen(0, 0, 0, 0, printscreen.Size);
-            printscreen.Save(path + "1.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+            printscreen.Save(path + $"{fileName}.jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
         }
     }
 }
